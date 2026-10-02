@@ -89,7 +89,7 @@ namespace osu.Game.Rulesets.Taiko.Difficulty
                 ));
             }
 
-            TaikoColourDifficultyPreprocessor.ProcessAndAssign(difficultyHitObjects);
+            TaikoColourDifficultyPreprocessor.ProcessAndAssign(noteObjects);
             TaikoRhythmDifficultyPreprocessor.ProcessAndAssign(noteObjects);
 
             return difficultyHitObjects;
