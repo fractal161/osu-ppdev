@@ -41,7 +41,7 @@ namespace osu.Game.Rulesets.Taiko.Difficulty.Preprocessing.Colour.Data
         /// <summary>
         /// The hit type of all objects encoded within this <see cref="MonoStreak"/>
         /// </summary>
-        public HitType? HitType => (HitObjects[0].BaseObject as Hit)?.Type;
+        public HitType HitType => HitObjects[0].BaseHit.Type;
 
         /// <summary>
         /// How long the mono pattern encoded within is

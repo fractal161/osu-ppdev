@@ -4,7 +4,6 @@
 using System;
 using osu.Game.Rulesets.Difficulty.Preprocessing;
 using osu.Game.Rulesets.Taiko.Difficulty.Preprocessing;
-using osu.Game.Rulesets.Taiko.Objects;
 
 namespace osu.Game.Rulesets.Taiko.Difficulty.Evaluators
 {
@@ -16,11 +15,6 @@ namespace osu.Game.Rulesets.Taiko.Difficulty.Evaluators
         /// </summary>
         public static double EvaluateDifficultyOf(DifficultyHitObject current)
         {
-            if (current.BaseObject is not Hit)
-            {
-                return 0.0;
-            }
-
             // Find the previous hit object hit by the current finger, which is n notes prior, n being the number of
             // available fingers.
             TaikoDifficultyHitObject taikoCurrent = (TaikoDifficultyHitObject)current;

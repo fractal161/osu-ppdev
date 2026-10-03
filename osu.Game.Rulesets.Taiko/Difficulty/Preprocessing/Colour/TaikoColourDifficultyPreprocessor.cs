@@ -72,13 +72,13 @@ namespace osu.Game.Rulesets.Taiko.Difficulty.Preprocessing.Colour
 
             for (int i = 0; i < data.Count; i++)
             {
-                TaikoDifficultyHitObject taikoObject = (TaikoDifficultyHitObject)data[i];
+                TaikoDifficultyHitObject taikoObject = data[i];
 
                 // This ignores all non-note objects, which may or may not be the desired behaviour
                 TaikoDifficultyHitObject? previousObject = taikoObject.PreviousNote(0);
 
                 // If this is the first object in the list or the colour changed, create a new mono streak
-                if (currentMonoStreak == null || previousObject == null || (taikoObject.BaseObject as Hit)?.Type != (previousObject.BaseObject as Hit)?.Type)
+                if (currentMonoStreak == null || previousObject == null || taikoObject.BaseHit.Type != previousObject.BaseHit.Type)
                 {
                     currentMonoStreak = new MonoStreak();
                     monoStreaks.Add(currentMonoStreak);

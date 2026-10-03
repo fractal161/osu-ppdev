@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using osu.Game.Beatmaps.ControlPoints;
 using osu.Game.Rulesets.Difficulty.Preprocessing;
+using osu.Game.Rulesets.Objects;
 using osu.Game.Rulesets.Taiko.Difficulty.Evaluators;
 using osu.Game.Rulesets.Taiko.Difficulty.Preprocessing.Colour;
 using osu.Game.Rulesets.Taiko.Difficulty.Preprocessing.Rhythm;
@@ -14,7 +15,7 @@ using osu.Game.Rulesets.Taiko.Objects;
 namespace osu.Game.Rulesets.Taiko.Difficulty.Preprocessing
 {
     /// <summary>
-    /// Represents a single hit object in taiko difficulty calculation. We only consider Hits (i.e. no DrumRolls or Swells)
+    /// Represents a single hit object in taiko difficulty calculation.
     /// </summary>
     public class TaikoDifficultyHitObject : DifficultyHitObject, IHasInterval
     {
@@ -32,6 +33,11 @@ namespace osu.Game.Rulesets.Taiko.Difficulty.Preprocessing
         /// The list of all <see cref="TaikoDifficultyHitObject"/> that is either a regular note or finisher in the beatmap
         /// </summary>
         private readonly IReadOnlyList<TaikoDifficultyHitObject> noteDifficultyHitObjects;
+
+        /// <summary>
+        /// The <see cref="HitObject"/> wrapped by a TaikoDifficultyHitObject. We ignore DrumRolls/Swells for diffcalc.
+        /// </summary>
+        public readonly Hit BaseHit;
 
         /// <summary>
         /// Rhythm data used by <see cref="RhythmEvaluator"/>.
@@ -71,6 +77,7 @@ namespace osu.Game.Rulesets.Taiko.Difficulty.Preprocessing
                                         double globalSliderVelocity)
             : base(hitObject, lastObject, clockRate, objects, index)
         {
+            BaseHit = hitObject;
             noteDifficultyHitObjects = objects;
 
             ColourData = new TaikoColourData();
