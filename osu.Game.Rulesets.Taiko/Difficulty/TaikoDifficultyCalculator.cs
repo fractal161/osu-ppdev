@@ -15,6 +15,7 @@ using osu.Game.Rulesets.Taiko.Difficulty.Preprocessing.Colour;
 using osu.Game.Rulesets.Taiko.Difficulty.Preprocessing.Rhythm;
 using osu.Game.Rulesets.Taiko.Difficulty.Skills;
 using osu.Game.Rulesets.Taiko.Mods;
+using osu.Game.Rulesets.Taiko.Objects;
 using osu.Game.Utils;
 
 namespace osu.Game.Rulesets.Taiko.Difficulty
@@ -65,32 +66,31 @@ namespace osu.Game.Rulesets.Taiko.Difficulty
 
         protected override IEnumerable<DifficultyHitObject> CreateDifficultyHitObjects(IBeatmap beatmap, Mod[] mods)
         {
-            var difficultyHitObjects = new List<DifficultyHitObject>();
+            var difficultyHitObjects = new List<TaikoDifficultyHitObject>();
             var centreObjects = new List<TaikoDifficultyHitObject>();
             var rimObjects = new List<TaikoDifficultyHitObject>();
-            var noteObjects = new List<TaikoDifficultyHitObject>();
 
             double clockRate = ModUtils.CalculateRateWithMods(mods);
 
-            // Generate TaikoDifficultyHitObjects from the beatmap's hit objects.
-            for (int i = 2; i < beatmap.HitObjects.Count; i++)
+            // Generate TaikoDifficultyHitObjects from the beatmap's Hits
+            IReadOnlyList<Hit> noteHitObjects = beatmap.HitObjects.OfType<Hit>().ToList();
+            for (int i = 1; i < noteHitObjects.Count; i++)
             {
                 difficultyHitObjects.Add(new TaikoDifficultyHitObject(
-                    beatmap.HitObjects[i],
-                    beatmap.HitObjects[i - 1],
+                    noteHitObjects[i],
+                    noteHitObjects[i - 1],
                     clockRate,
                     difficultyHitObjects,
                     centreObjects,
                     rimObjects,
-                    noteObjects,
                     difficultyHitObjects.Count,
                     beatmap.ControlPointInfo,
                     beatmap.Difficulty.SliderMultiplier
                 ));
             }
 
-            TaikoColourDifficultyPreprocessor.ProcessAndAssign(noteObjects);
-            TaikoRhythmDifficultyPreprocessor.ProcessAndAssign(noteObjects);
+            TaikoColourDifficultyPreprocessor.ProcessAndAssign(difficultyHitObjects);
+            TaikoRhythmDifficultyPreprocessor.ProcessAndAssign(difficultyHitObjects);
 
             return difficultyHitObjects;
         }
